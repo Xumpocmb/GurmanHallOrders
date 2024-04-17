@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Catalog</h1>
+
+    {% if categories %}
+        <ul>
+            {% for category in categories %}
+                <li><a href="{% url 'app_catalog:category_detail' category.slug %}">{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if items %}
+        <div class="all-category-items">
+            <ul class="ul-category-items">
+                {% for item in items %}
+                    <div class="div-category-item">
+                        <li><p class="item-name">{{ item.name }}</p></li>
+                        <ul>
+                                {% for param in item.itemparams_set.all %}
+                                    <li class="li-item-params">
+                                        {% if param.size.size %}
+                                            <p class="item-params">{{ param.size.size }} см. - {{ param.price }} руб.</p>
+                                                {% if user.is_authenticated %}
+                                                    <p class="link-to-cart"><a href="{% url 'app_user:add_to_cart' item_id=item.id param_id=param.id %}">Добавить
+                                                        в корзину</a></p>
+                                                {% endif %}
+                                        {% endif %}
+
+                                        {% if param.weight %}
+                                            <p class="item-params">{{ param.weight }} гр. - {{ param.price }} руб.</p>
+                                                {% if user.is_authenticated %}
+                                                    <p class="link-to-cart"><a href="{% url 'app_user:add_to_cart' item_id=item.id param_id=param.id %}">Добавить
+                                                        в корзину</a></p>
+                                                {% endif %}
+                                        {% endif %}
+
+                                        {% if param.count %}
+                                            <p class="item-params">{{ param.count }} шт. - {{ param.price }} руб.</p>
+                                            {% if user.is_authenticated %}
+                                                <p class="link-to-cart"><a href="{% url 'app_user:add_to_cart' item_id=item.id param_id=param.id %}">Добавить
+                                                    в корзину</a></p>
+                                            {% endif %}
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
+
+
+    {% endif %}
+{% endblock %}

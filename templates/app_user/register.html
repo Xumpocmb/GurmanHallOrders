@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+	<h2>Регистрация</h2>
+    {% if message_error %}
+    <p>{{ message_error }}</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        
+        <p><label for="username">Имя пользователя</label></p>
+        <p><input type="text" name="username" id="username"></p>
+        
+        <p><label for="password1">Введите пароль</label></p>
+        <p><input type="password" name="password1" id="password1"></p>
+        
+        <p><label for="password2">Повторите пароль</label></p>
+        <p><input type="password" name="password2" id="password2"></p>
+        
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+{% endblock %}
+    

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="{% url 'app_order:order_create' %}" method="post">
+        {% csrf_token %}
+        <div>
+            <label for="id_first_name">Имя:</label>
+            <input type="text" name="first_name" id="id_first_name" value="тест имя юзер">
+            {% for error in form.first_name.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        <div>
+            <label for="id_last_name">Фамилия:</label>
+            <input type="text" name="last_name" id="id_last_name" value="тест фамилия юзер">
+            {% for error in form.last_name.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        <div>
+            <label for="id_email">Email:</label>
+            <input type="email" name="email" id="id_email" value="test_email@email.com">
+            {% for error in form.email.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        <div>
+            <label for="id_address">Адрес:</label>
+            <input type="text" name="address" id="id_address" value="тест адрес юзер">
+            {% for error in form.address.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        <div>
+            <label for="id_phone">Телефон:</label>
+            <input type="text" name="phone" id="id_phone" value="тест телефон юзер 12345">
+            {% for error in form.phone.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        <div>
+            <label for="id_delivery_method">Метод доставки:</label>
+            <select name="delivery_method" id="id_delivery_method">
+                <option value="Курьер">Курьер</option>
+                <option value="Самовывоз">Самовывоз</option>
+            </select>
+        </div>
+        <div>
+            <label for="id_payment_method">Метод оплаты:</label>
+            <select name="payment_method" id="id_payment_method">
+                <option value="1">Наличные</option>
+                <option value="2">Банковская карта</option>
+            </select>
+        </div>
+        <button type="submit">Отправить заказ</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+	<h1>{{ title }}</h1>
+    {% if orders %}
+        <table class="table-orders">
+            <tr>
+                <th>Номер заказа</th>
+                <th>Заказчик</th>
+                <th>Дата создания</th>
+                <th>Обновлен</th>
+                <th>Статус</th>
+                <th>Печать</th>
+            </tr>
+            {% for order in orders %}
+                <tr class="order-info status-{{ order.status }}">
+                    <td><a class="order-link" href="{% url 'app_order:order_detail' order.id %}">{{ order.id }}</a>
+                    <td>{{ order.first_name }}</td>
+                    <td>{{ order.created_at }}</td>
+                    <td>{{ order.updated_at }}</td>
+                    <td>{{ order.get_status_display }}</td>
+                    <td class="td-print" rowspan="2"><a href="{% url 'app_order:download_pdf' order.id %}"><img class="td-img-print" src="{% static 'img/print-ico.png' %}" alt="Print"></a></td>
+                </tr>
+                <tr class="tr-order-management">
+                    <td class="order-management"><a href="{% url 'app_order:change_order_status' order.id 2 %}">В обработке</a></td>
+                    <td class="order-management"><a href="{% url 'app_order:change_order_status' order.id 3 %}">Готов</a></td>
+                    <td class="order-management"><a href="{% url 'app_order:change_order_status' order.id 4 %}">В пути</a></td>
+                    <td class="order-management"><a href="{% url 'app_order:change_order_status' order.id 5 %}">Выдан</a></td>
+                    <td class="order-management"><a href="{% url 'app_order:change_order_status' order.id 6 %}">Отменить</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>У вас пока нет заказов.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<h1>Main Page</h1>
+    {% if request.user.is_authenticated %}
+    Добро пожаловать, {{ request.user.username }}!
+    <a href="{% url 'app_user:logout' %}">Выход</a>
+{% else %}
+    Добро пожаловать! Для работы с системой необходимо авторизоваться!
+{% endif %}
+{% endblock %}

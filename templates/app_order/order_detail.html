@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <p><strong>Номер заказа:</strong> {{ order.id }}</p>
+    <p><strong>Дата создания:</strong> {{ order.created_at }}</p>
+    <p><strong>Статус:</strong> {{ order.get_status_display }}</p>
+    <p><strong>Имя:</strong> {{ order.first_name }}</p>
+    <p><strong>Фамилия:</strong> {{ order.last_name }}</p>
+    <p><strong>Email:</strong> {{ order.email }}</p>
+    <p><strong>Адрес:</strong> {{ order.address }}</p>
+    <p><strong>Телефон:</strong> {{ order.phone }}</p>
+    <p><strong>Описание:</strong> {{ order.description }}</p>
+    <p><strong>Метод доставки:</strong> {{ order.delivery_method }}</p>
+    <p><strong>Метод оплаты:</strong> {{ order.get_payment_method_display }}</p>
+    <p><strong>Создан:</strong> {{ order.created_at }}</p>
+    <p><strong>Обновлен:</strong> {{ order.updated_at }}</p>
+    <h2>Товары в Заказе:</h2>
+    <ul>
+        {% for basket in order.basket_history.baskets %}
+            <li><strong>{{ basket.product_name }}:</strong></li>
+            <ul>
+                <li><strong>Цена:</strong> {{ basket.price }}</li>
+                <li><strong>Сумма:</strong> {{ basket.sum }}</li>
+                <li><strong>Количество:</strong> {{ basket.quantity }}</li>
+                <li><strong>Описание:</strong> {{ basket.description }}</li>
+                <li><strong>Параметры товара:</strong>
+                    <ul>
+                        {% if basket.params.size %}
+                            <li>Размер: {{ basket.params.size }}</li>
+                        {% endif %}
+                        {% if basket.params.weight %}
+                            <li>Вес : {{ basket.params.weight }}</li>
+                        {% endif %}
+                        {% if basket.params.count %}
+                            <li>Количество: {{ basket.params.count }}</li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+
+        {% endfor %}
+    </ul>
+    <p><strong>Общая сумма заказа:</strong> {{ order.basket_history.total_sum }}</p>
+{% endblock %}

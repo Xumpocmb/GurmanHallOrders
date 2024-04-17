@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Корзина</h1>
+
+    {% if cart_items %}
+        <ul>
+            {% for cart_item in cart_items %}
+                <li>
+                    <p class="item-name">{{ cart_item.item.name }}</p>
+                    <p class="item-params">Количество: {{ cart_item.quantity }}</p>
+                    <p class="item-params">{% if cart_item.item_params.size %}
+                        {{ cart_item.item_params.size }}
+                    {% elif cart_item.item_params.weight %}
+                        {{ cart_item.item_params.weight }} гр
+                    {% elif cart_item.item_params.count %}
+                        {{ cart_item.item_params.count }} шт.
+                    {% endif %}
+                        - {{ cart_item.item_params.price }} руб.</p>
+                    <p class="link-to-cart"><a class="link-from-cart"
+                                               href="{% url 'app_user:remove_from_cart' cart_item.id %}">Удалить</a></p>
+                </li>
+            {% endfor %}
+        </ul>
+        <p class="item-name">Общая сумма: {{ total_price }} руб.</p>
+        <p><a href="{% url 'app_order:order_create' %}">Оформить заказ</a></p>
+    {% endif %}
+
+    {% if not cart_items %}
+        <p>Корзина пуста</p>
+    {% endif %}
+{% endblock %}

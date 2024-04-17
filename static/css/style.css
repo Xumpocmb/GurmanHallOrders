@@ -1,0 +1,236 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Verdana, serif;
+    font-size: 14px;
+}
+
+a {
+    text-decoration: none;
+    font-size: 14px;
+    color: #2d6e5a;
+}
+
+a:hover {
+    font-size: 14px;
+    color: white;
+    background: #2d6e5a;
+    transition: 0.5s;
+}
+
+.table-orders {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #000000;
+    margin-bottom: 20px;
+}
+
+td {
+    padding: 5px;
+    text-align: center;
+    border-right: 1px dashed black;
+}
+
+th {
+    border: 1px solid #000000;
+    padding: 5px;
+    text-align: center;
+}
+
+tr.order-info {
+    border: 3px solid #000000;
+    border-bottom: 1px dashed black;
+}
+
+tr.tr-order-management {
+    border-left: 3px solid #000000;
+    border-right: 3px solid #000000;
+    border-bottom: 3px solid #000000;
+}
+
+td.order-management {
+    padding: 0;
+}
+
+td.td-print {
+    background: white;
+    border-left: 3px solid #000000;
+}
+
+img.td-img-print {
+    max-width: 100%;
+    height: 50px;
+}
+
+.ul-category-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 колонки с равными ширинами */
+    gap: 10px;
+}
+
+p.item-name {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+p.item-params {
+    margin: 0;
+    padding: 0;
+}
+
+p.link-to-cart {
+    margin: 0;
+    padding: 0;
+}
+
+a.link-from-cart {
+    margin: 0;
+    padding: 0;
+    color: red;
+    font-weight: bold;
+}
+
+a.order-link {
+    margin: 0;
+    padding: 0;
+    color: black;
+    font-weight: bold;
+}
+
+.li-item-params {
+    padding: 5px 0;
+}
+
+/* Шапка */
+.header-name {
+    display: flex;
+    align-items: center;
+    background-color: #38876e;
+    padding: 10px;
+}
+
+.header-text-name {
+    margin: 0 auto;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #000000;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.logo-img {
+    width: 100px;
+}
+
+/* Верхнее меню */
+.menu-wrapper {
+    width: 100%;
+    background: #2d6e5a;
+}
+
+.menu-selection {
+    padding: 5px;
+}
+
+.menu-main {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    list-style: none;
+    padding: 19px;
+}
+
+.menu-item a {
+    color: black;
+}
+
+.menu-item:hover {
+    background-color: #38876e;
+}
+
+
+.menu-item a:hover {
+    text-decoration: underline;
+    color: white;
+    text-shadow: 1px 1px 1px #000000;
+    transition: 0.5s;
+}
+
+
+/* Пример стилей для различных статусов заказа */
+.status-0 {
+    background-color: #ffc107;
+}
+
+.status-1 {
+    background-color: #28a745;
+}
+
+.status-2 {
+    background-color: #007bff;
+}
+
+.status-3 {
+    background-color: #17a2b8;
+}
+
+.status-4 {
+    background-color: #6c757d;
+}
+
+.status-5 {
+    background-color: #28a745;
+}
+
+.status-6 {
+    background-color: #dc3545;
+}
+
+/* уведомления от джанго */
+
+.alert-info {
+    background-color: #2d75c5; /* Синий цвет для уведомлений */
+    color: white; /* Белый текст */
+}
+
+.alert-success {
+    background-color: #38866d; /* Зеленый цвет для успешных уведомлений */
+    color: white; /* Белый текст */
+}
+
+.alert-danger {
+    background-color: #b02f3d; /* Красный цвет для уведомлений об ошибках */
+    color: white; /* Белый текст */
+}
+
+.alert-dismissible {
+    padding-right: 20px;
+}
+
+.alert-dismissible .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+}
+
+
+/* уведомления */
+.fade {
+  opacity: 0;
+  transition: opacity 0.15s linear;
+}
+
+.fade.show {
+  opacity: 1;
+}
