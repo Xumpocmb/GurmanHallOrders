@@ -41,6 +41,7 @@ class Order(models.Model):
     branch = models.ForeignKey(CafeBranch, on_delete=models.SET_NULL, null=True, blank=True)
     delivery_method = models.CharField(max_length=255, null=False, blank=False)
     payment_method = models.SmallIntegerField(default=1, choices=PAYMENT_METHODS)
+    free_delivery = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -65,6 +66,12 @@ class Order(models.Model):
             'total_sum': total_sum
         }
         self.basket_history = basket_history
+
+        if self.delivery_method == 'Курьер':
+            if total_sum > 20:
+                self.free_delivery = True
+            else:
+                self.free_delivery = False
         carts.delete()
         self.save()
 

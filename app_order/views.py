@@ -117,6 +117,10 @@ def generate_pdf(order):
         paragraph = Paragraph(item, normal_style)
         content.append(paragraph)
 
+    if order.delivery_method == 'Курьер':
+        if order.free_delivery:
+            content.append(Paragraph('Доставка: Бесплатная доставка', normal_style))
+
     # Корзина
     content.append(Paragraph('Товар(ы):', heading_style1))
 

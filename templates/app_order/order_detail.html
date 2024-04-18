@@ -13,6 +13,14 @@
     <p class="item-params"><strong>Описание:</strong> {{ order.description }}</p>
     <p class="item-params"><strong>Филиал:</strong> {{ order.branch }}</p>
     <p class="item-params"><strong>Метод доставки:</strong> {{ order.delivery_method }}</p>
+    <!-- Отображение информации о бесплатной доставке -->
+    {% if order.delivery_method == 'Курьер' %}
+        {% if order.free_delivery %}
+            <p><strong>Бесплатная доставка:</strong> Да</p>
+        {% else %}
+            <p><strong>Бесплатная доставка:</strong> Нет</p>
+        {% endif %}
+    {% endif %}
     <p class="item-params"><strong>Метод оплаты:</strong> {{ order.get_payment_method_display }}</p>
     <p class="item-params"><strong>Создан:</strong> {{ order.created_at }}</p>
     <p class="item-params"><strong>Обновлен:</strong> {{ order.updated_at }}</p>
