@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from app_catalog.models import Item, ItemParams
+from app_catalog.models import Item, ItemParams, PizzaSauce, Topping, PizzaBoard
 from django.utils.translation import gettext_lazy as _
 
 
@@ -49,6 +49,9 @@ class CartItem(models.Model):
     item_params = models.ForeignKey(to=ItemParams, on_delete=models.CASCADE, verbose_name='Параметры', null=True, blank=True)
     quantity = models.PositiveSmallIntegerField(verbose_name='Количество', null=True, blank=True)
     description = models.TextField(verbose_name='Описание', null=True, blank=True)
+    sauce_base = models.ForeignKey(to=PizzaSauce, on_delete=models.SET_NULL, verbose_name='Соус-основа', null=True, blank=True)
+    pizza_board = models.ForeignKey(to=PizzaBoard, on_delete=models.SET_NULL, verbose_name='Борт для пиццы', null=True, blank=True)
+    topping = models.ForeignKey(to=Topping, on_delete=models.SET_NULL, verbose_name='Шапочка', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создан', null=True, blank=True)
 
     objects = CartQuerySet.as_manager()
@@ -66,7 +69,7 @@ class CartItem(models.Model):
 
     def de_json(self):
         items = {
-            'product_name': self.item.name,
+            'product_name': f'{self.item.category.name}|{self.item.name}',
             'price': float(self.item_params.price),
             'sum': float(self.sum()),
             'quantity': self.quantity,
@@ -75,6 +78,9 @@ class CartItem(models.Model):
                 'size': float(self.item_params.size.size) if self.item_params.size else None,
                 'count': float(self.item_params.count) if self.item_params.count else None,
                 'weight': float(self.item_params.weight) if self.item_params.weight else None
-            }
+            },
+            'sauce': self.sauce_base.name if self.sauce_base else None,
+            'topping': self.topping.name if self.topping else None,
+            'pizza_board': self.pizza_board.name if self.pizza_board else None
         }
         return items

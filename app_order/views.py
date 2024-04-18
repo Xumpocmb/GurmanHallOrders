@@ -99,8 +99,8 @@ def generate_pdf(order):
     content.append(Paragraph(f'{order.branch.phone2}', heading_style3))
 
     # Строка с датой и временем
-    # date_string = order.created_at.strftime('%d-%m-%Y %H:%M')
-    # content.append(Paragraph(f'Дата: {date_string}', normal_style))
+    date_string = order.created_at.strftime('%d-%m-%Y %H:%M')
+    content.append(Paragraph(f'Дата: {date_string}', normal_style))
 
     # Данные для заказа
     data = [
@@ -125,6 +125,9 @@ def generate_pdf(order):
         quantity = basket['quantity']
         price = basket['price']
         basket_sum = basket['sum']
+        sauce = basket['sauce']
+        topping = basket['topping']
+        pizza_board = basket['pizza_board']
 
         content.append(Paragraph(f'{product_name}: {quantity}', heading_style3))
         params = basket['params']
@@ -134,6 +137,12 @@ def generate_pdf(order):
             content.append(Paragraph(f'Шт.: {params['count']}', normal_style))
         if params['weight']:
             content.append(Paragraph(f'Гр.: {params['weight']}', normal_style))
+        if sauce:
+            content.append(Paragraph(f'{sauce}', normal_style))
+        if topping:
+            content.append(Paragraph(f'{topping}', normal_style))
+        if pizza_board:
+            content.append(Paragraph(f'{pizza_board}', normal_style))
         content.append(Paragraph(f'Цена: {price}', normal_style))
         content.append(Paragraph(f'Сумма товара: {basket_sum}', normal_style))
 

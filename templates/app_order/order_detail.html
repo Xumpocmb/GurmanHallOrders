@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
-    <p><strong>Номер заказа:</strong> {{ order.id }}</p>
-    <p><strong>Дата создания:</strong> {{ order.created_at }}</p>
-    <p><strong>Статус:</strong> {{ order.get_status_display }}</p>
-    <p><strong>Имя:</strong> {{ order.first_name }}</p>
-    <p><strong>Фамилия:</strong> {{ order.last_name }}</p>
-    <p><strong>Email:</strong> {{ order.email }}</p>
-    <p><strong>Адрес:</strong> {{ order.address }}</p>
-    <p><strong>Телефон:</strong> {{ order.phone }}</p>
-    <p><strong>Описание:</strong> {{ order.description }}</p>
-    <p><strong>Филиал:</strong> {{ order.branch }}</p>
-    <p><strong>Метод доставки:</strong> {{ order.delivery_method }}</p>
-    <p><strong>Метод оплаты:</strong> {{ order.get_payment_method_display }}</p>
-    <p><strong>Создан:</strong> {{ order.created_at }}</p>
-    <p><strong>Обновлен:</strong> {{ order.updated_at }}</p>
+    <h1 class="main-title">{{ title }}</h1>
+    <p class="item-params"><strong>Номер заказа:</strong> {{ order.id }}</p>
+    <p class="item-params"><strong>Дата создания:</strong> {{ order.created_at }}</p>
+    <p class="item-params"><strong>Статус:</strong> {{ order.get_status_display }}</p>
+    <p class="item-params"><strong>Имя:</strong> {{ order.first_name }}</p>
+    <p class="item-params"><strong>Фамилия:</strong> {{ order.last_name }}</p>
+    <p class="item-params"><strong>Email:</strong> {{ order.email }}</p>
+    <p class="item-params"><strong>Адрес:</strong> {{ order.address }}</p>
+    <p class="item-params"><strong>Телефон:</strong> {{ order.phone }}</p>
+    <p class="item-params"><strong>Описание:</strong> {{ order.description }}</p>
+    <p class="item-params"><strong>Филиал:</strong> {{ order.branch }}</p>
+    <p class="item-params"><strong>Метод доставки:</strong> {{ order.delivery_method }}</p>
+    <p class="item-params"><strong>Метод оплаты:</strong> {{ order.get_payment_method_display }}</p>
+    <p class="item-params"><strong>Создан:</strong> {{ order.created_at }}</p>
+    <p class="item-params"><strong>Обновлен:</strong> {{ order.updated_at }}</p>
     <h2>Товары в Заказе:</h2>
     <ul>
         {% for basket in order.basket_history.baskets %}
@@ -31,10 +31,19 @@
                             <li>Размер: {{ basket.params.size }}</li>
                         {% endif %}
                         {% if basket.params.weight %}
-                            <li>Вес : {{ basket.params.weight }}</li>
+                            <li>Вес: {{ basket.params.weight }}</li>
                         {% endif %}
                         {% if basket.params.count %}
                             <li>Количество: {{ basket.params.count }}</li>
+                        {% endif %}
+                        {% if basket.sauce %}
+                            <li>Соус: {{ basket.sauce }}</li>
+                        {% endif %}
+                        {% if basket.topping %}
+                            <li>Шапочка: {{ basket.topping }}</li>
+                        {% endif %}
+                        {% if basket.pizza_board %}
+                            <li>Борт: {{ basket.pizza_board }}</li>
                         {% endif %}
                     </ul>
                 </li>

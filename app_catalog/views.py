@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from app_catalog.models import Item, Category
+from app_catalog.models import Item, Category, PizzaSauce, PizzaBoard
 
 
 def catalog(request):
@@ -11,9 +11,13 @@ def catalog(request):
 
 
 def category_detail(request, slug):
+    category = Category.objects.filter(slug=slug).first()
     context = {
         'title': 'Категория',
-        'category': Category.objects.get(slug=slug),
+        'category': category,
         'items': Item.objects.filter(category__slug=slug),
     }
+    if slug == 'picca':
+        context['sauces'] = PizzaSauce.objects.all()
+        context['pizza_board'] = PizzaBoard.objects.all()
     return render(request, 'app_catalog/catalog.html', context=context)

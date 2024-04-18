@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Catalog</h1>
+    <h1 class="main-title">Каталог</h1>
 
     {% if categories %}
         <ul>
@@ -16,41 +16,55 @@
             <ul class="ul-category-items">
                 {% for item in items %}
                     <div class="div-category-item">
-                        <li><p class="item-name">{{ item.name }}</p></li>
-                        <ul>
+                        <form action="{% url 'app_user:add_to_cart' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <li><p class="item-name">{{ item.name }}</p></li>
+                        <div class="parameter-for-item">
+                            {% if category.name == 'Пицца' %}
+                                <!-- соус основа -->
+                                <label for="sauce_base">Соус основа:</label>
+                                <select class="select-item" name="sauce_base" id="sauce_base">
+                                    {% for sauce in sauces %}
+                                        <option value="{{ sauce.id }}">{{ sauce.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <!-- борт для пиццы -->
+                                <label for="pizza_board">Борт для пиццы:</label>
+                                <select class="select-item" name="pizza_board" id="pizza_board">
+                                    {% for board in pizza_board %}
+                                        <option value="{{ board.id }}">{{ board.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                
+                            {% endif %}
+                        </div>
+                        <div class="parameter-for-item">
+                            <label for="item-params">Параметры:</label>
+                            <select name="item-params" id="item-params">
                                 {% for param in item.itemparams_set.all %}
-                                    <li class="li-item-params">
-                                        {% if param.size.size %}
-                                            <p class="item-params">{{ param.size.size }} см. - {{ param.price }} руб.</p>
-                                                {% if user.is_authenticated %}
-                                                    <p class="link-to-cart"><a href="{% url 'app_user:add_to_cart' item_id=item.id param_id=param.id %}">Добавить
-                                                        в корзину</a></p>
-                                                {% endif %}
-                                        {% endif %}
+                                    {% if param.size.size %}
+                                        <option value="{{ param.id }}">{{ param.size.size }} см. - {{ param.price }} руб.
+                                        </option>
+                                    {% endif %}
 
-                                        {% if param.weight %}
-                                            <p class="item-params">{{ param.weight }} гр. - {{ param.price }} руб.</p>
-                                                {% if user.is_authenticated %}
-                                                    <p class="link-to-cart"><a href="{% url 'app_user:add_to_cart' item_id=item.id param_id=param.id %}">Добавить
-                                                        в корзину</a></p>
-                                                {% endif %}
-                                        {% endif %}
+                                    {% if param.weight %}
+                                        <option value="{{ param.id }}">{{ param.weight }} гр. - {{ param.price }} руб.
+                                        </option>
+                                    {% endif %}
 
-                                        {% if param.count %}
-                                            <p class="item-params">{{ param.count }} шт. - {{ param.price }} руб.</p>
-                                            {% if user.is_authenticated %}
-                                                <p class="link-to-cart"><a href="{% url 'app_user:add_to_cart' item_id=item.id param_id=param.id %}">Добавить
-                                                    в корзину</a></p>
-                                            {% endif %}
-                                        {% endif %}
-                                    </li>
+                                    {% if param.count %}
+                                        <option value="{{ param.id }}">{{ param.count }} шт. - {{ param.price }} руб.</option>
+                                    {% endif %}
+
                                 {% endfor %}
-                            </ul>
+                            </select>
+                        </div>
+                            <input type="submit" value="Добавить в корзину">
+                        </form>
                     </div>
                 {% endfor %}
             </ul>
         </div>
-
-
     {% endif %}
 {% endblock %}

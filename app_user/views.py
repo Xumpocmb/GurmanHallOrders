@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, UserLoginForm
 from django.shortcuts import get_object_or_404, redirect
-from app_catalog.models import Item, ItemParams
+from app_catalog.models import Item, ItemParams, PizzaSauce, Topping, PizzaBoard
 from app_user.models import CartItem
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -54,19 +54,27 @@ def logout_view(request):
 
 
 @login_required
-def add_to_cart_view(request, item_id, param_id):
+def add_to_cart_view(request):
+
+    item_id = request.POST.get('item_id')
+    param_id = request.POST.get('item-params')
     item = get_object_or_404(Item, pk=item_id)
     item_params = get_object_or_404(ItemParams, pk=param_id)
     user = request.user
+    sauce_base = PizzaSauce.objects.filter(pk=request.POST.get('sauce_base')).first() if request.POST.get('sauce_base') else None
+    topping = Topping.objects.filter(pk=request.POST.get('topping')).first() if request.POST.get('topping') else None
+    pizza_board = PizzaBoard.objects.filter(pk=request.POST.get('pizza_board')).first() if request.POST.get('pizza_board') else None
 
-    existing_cart_item = CartItem.objects.filter(user=user, item=item, item_params=item_params).first()
+    existing_cart_item = CartItem.objects.filter(user=user, item=item, item_params=item_params, sauce_base=sauce_base,
+                                                 topping=topping, pizza_board=pizza_board).first()
 
     if existing_cart_item:
         existing_cart_item.quantity += 1
         existing_cart_item.save()
         messages.success(request, f'{item.name} добавлен в корзину', extra_tags='success')
     else:
-        CartItem.objects.create(user=user, item=item, item_params=item_params, quantity=1)
+        CartItem.objects.create(user=user, item=item, item_params=item_params, quantity=1, sauce_base=sauce_base,
+                                pizza_board=pizza_board, topping=topping)
         messages.success(request, f'{item.name} добавлен в корзину', extra_tags='success')
     return redirect('app_catalog:catalog')
 
@@ -84,7 +92,6 @@ def cart_view(request):
     user = request.user
     cart_items = CartItem.objects.filter(user=user)
     total_price = sum(item.sum() for item in cart_items)
-
     context = {
         'cart_items': cart_items,
         'total_price': total_price,

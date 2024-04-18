@@ -100,3 +100,31 @@ class PizzaBoard(models.Model):
 
     def __str__(self):
         return f'Борт для пиццы: {self.name}'
+
+
+class PizzaSauce(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Название соуса')
+    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True, verbose_name='URL')
+    is_active = models.BooleanField(default=True, verbose_name='Активен')
+
+    class Meta:
+        db_table = 'pizza_sauces'
+        verbose_name = 'Соус-основа пиццы'
+        verbose_name_plural = 'Соус-основа пиццы'
+
+    def __str__(self):
+        return f'Соус для пиццы: {self.name}'
+
+
+class Topping(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Название шапочки')
+    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True, verbose_name='URL')
+    is_active = models.BooleanField(default=True, verbose_name='Активен')
+
+    class Meta:
+        db_table = 'toppings'
+        verbose_name = 'Шапочка для запеченных роллов'
+        verbose_name_plural = 'Шапочки для запеченных роллов'
+
+    def __str__(self):
+        return f'Соус для пиццы: {self.name}'

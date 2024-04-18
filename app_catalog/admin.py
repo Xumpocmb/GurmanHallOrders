@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app_catalog.models import Category, Item, ItemParams, PizzaBoard, CafeBranch, PizzaSizes
+from app_catalog.models import Category, Item, ItemParams, PizzaBoard, CafeBranch, PizzaSizes, PizzaSauce, Topping
 
 
 @admin.register(CafeBranch)
@@ -39,3 +39,15 @@ class PizzaBoardAdmin(admin.ModelAdmin):
 class PizzaSizesAdmin(admin.ModelAdmin):
     list_display = ['size']
     prepopulated_fields = {"slug": ("size",)}
+
+
+@admin.register(PizzaSauce)
+class PizzaSauceAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    prepopulated_fields = {"slug": ("name",)}
+
+
+@admin.register(Topping)
+class ToppingAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    prepopulated_fields = {"slug": ("name",)}

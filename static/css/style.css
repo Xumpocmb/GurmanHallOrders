@@ -17,11 +17,33 @@ a:hover {
     transition: 0.5s;
 }
 
+div.content-wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+div.parameter-for-item {
+    display: block;
+}
+
+div.all-category-items {
+    margin: 20px auto;
+    padding: 30px;
+    max-width: 100%;
+}
+
 .table-orders {
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #000000;
     margin-bottom: 20px;
+}
+
+.main-title {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
 }
 
 td {
@@ -67,7 +89,7 @@ img.td-img-print {
     margin: 0;
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 колонки с равными ширинами */
-    gap: 10px;
+    gap: 30px;
 }
 
 p.item-name {
