@@ -16,6 +16,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
+from app_catalog.models import CafeBranch
 
 
 def orders(request):
@@ -30,6 +31,7 @@ def orders(request):
 def order_create(request):
     context = {
         'title': 'Оформление заказа',
+        'branches': CafeBranch.objects.filter(is_active=True),
         'form': OrderForm(),
     }
 
@@ -82,31 +84,61 @@ def generate_pdf(order):
     styles = getSampleStyleSheet()
     styles['Normal'].fontName = 'Arial'
     styles['Heading1'].fontName = 'Arial'
+    styles['Heading3'].fontName = 'Arial'
     normal_style = styles['Normal']
-    heading_style = styles['Heading1']
+    heading_style1 = styles['Heading1']
+    heading_style3 = styles['Heading3']
 
     # Создаем список для содержимого PDF
     content = []
 
     # Заголовок
-    content.append(Paragraph(f'Детали заказа {order.display_id()}', heading_style))
+    content.append(Paragraph(f'Детали заказа {order.display_id()}', heading_style3))
+    content.append(Paragraph(f'{order.branch.name}', heading_style1))
+    content.append(Paragraph(f'{order.branch.phone1}', heading_style3))
+    content.append(Paragraph(f'{order.branch.phone2}', heading_style3))
+
+    # Строка с датой и временем
+    # date_string = order.created_at.strftime('%d-%m-%Y %H:%M')
+    # content.append(Paragraph(f'Дата: {date_string}', normal_style))
 
     # Данные для заказа
     data = [
-        f'First Name: {order.first_name}',
-        f'Last Name: {order.last_name}',
-        f'Email: {order.email}',
-        f'Address: {order.address}',
-        f'Phone: {order.phone}',
+        f'Заказчик: {order.first_name}',
+        f'Адрес: {order.address}',
+        f'Телефон: {order.phone}',
         f'Description: {order.description}',
-        f'Delivery Method: {order.delivery_method}',
-        f'Payment Method: {order.get_payment_method_display()}',
+        f'Способ доставки: {order.delivery_method}',
+        f'Способ оплаты: {order.get_payment_method_display()}',
     ]
 
     # Создаем абзацы и добавляем их в список содержимого
     for item in data:
         paragraph = Paragraph(item, normal_style)
         content.append(paragraph)
+
+    # Корзина
+    content.append(Paragraph('Товар(ы):', heading_style1))
+
+    for basket in order.basket_history['baskets']:
+        product_name = basket['product_name']
+        quantity = basket['quantity']
+        price = basket['price']
+        basket_sum = basket['sum']
+
+        content.append(Paragraph(f'{product_name}: {quantity}', heading_style3))
+        params = basket['params']
+        if params['size']:
+            content.append(Paragraph(f'Размер: {params['size']}', normal_style))
+        if params['count']:
+            content.append(Paragraph(f'Шт.: {params['count']}', normal_style))
+        if params['weight']:
+            content.append(Paragraph(f'Гр.: {params['weight']}', normal_style))
+        content.append(Paragraph(f'Цена: {price}', normal_style))
+        content.append(Paragraph(f'Сумма товара: {basket_sum}', normal_style))
+
+    # Общая сумма
+    content.append(Paragraph(f'Общая сумма заказа: {order.basket_history['total_sum']}', heading_style1))
 
     # Добавляем содержимое в PDF документ
     doc.build(content)

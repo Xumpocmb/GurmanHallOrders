@@ -39,10 +39,21 @@
             {% endfor %}
         </div>
         <div>
+            <label for="id_branch">Филиал:</label>
+        <select name="branch" id="id_branch">
+            {% for branch in branches %}
+                <option value="{{ branch.id }}">{{ branch.name }}</option>
+            {% endfor %}
+        </select>
+            {% for error in form.branch.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        <div>
             <label for="id_delivery_method">Метод доставки:</label>
             <select name="delivery_method" id="id_delivery_method">
-                <option value="Курьер">Курьер</option>
                 <option value="Самовывоз">Самовывоз</option>
+                <option value="Курьер">Курьер</option>
             </select>
         </div>
         <div>

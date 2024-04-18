@@ -2,6 +2,7 @@ from django.db import models
 
 from app_user.models import User
 from app_user.models import CartItem
+from app_catalog.models import CafeBranch
 
 
 class Order(models.Model):
@@ -37,6 +38,7 @@ class Order(models.Model):
     basket_history = models.JSONField(default=dict)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.SmallIntegerField(default=CREATED, choices=STATUSES)
+    branch = models.ForeignKey(CafeBranch, on_delete=models.SET_NULL, null=True, blank=True)
     delivery_method = models.CharField(max_length=255, null=False, blank=False)
     payment_method = models.SmallIntegerField(default=1, choices=PAYMENT_METHODS)
 

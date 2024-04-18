@@ -4,6 +4,8 @@ from django.db import models
 class CafeBranch(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
+    phone1 = models.CharField(max_length=20, null=True, blank=True)
+    phone2 = models.CharField(max_length=20, null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:
