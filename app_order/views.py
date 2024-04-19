@@ -118,8 +118,10 @@ def generate_pdf(order):
         content.append(paragraph)
 
     if order.delivery_method == 'Курьер':
-        if order.free_delivery:
-            content.append(Paragraph('Доставка: Бесплатная доставка', normal_style))
+        if order.free_delivery == 0.0:
+            content.append(Paragraph('Стоимость доставки: Бесплатная', normal_style))
+        else:
+            content.append(Paragraph(f'Стоимость доставки: {order.free_delivery} руб.', normal_style))
 
     # Корзина
     content.append(Paragraph('Товар(ы):', heading_style1))
@@ -127,7 +129,6 @@ def generate_pdf(order):
     for basket in order.basket_history['baskets']:
         product_name = basket['product_name']
         quantity = basket['quantity']
-        price = basket['price']
         basket_sum = basket['sum']
         sauce = basket['sauce']
         topping = basket['topping']
@@ -142,12 +143,11 @@ def generate_pdf(order):
         if params['weight']:
             content.append(Paragraph(f'Гр.: {params['weight']}', normal_style))
         if sauce:
-            content.append(Paragraph(f'{sauce}', normal_style))
+            content.append(Paragraph(f'Соус основа:{sauce}', normal_style))
         if topping:
-            content.append(Paragraph(f'{topping}', normal_style))
+            content.append(Paragraph(f'Шапочка: {topping}', normal_style))
         if pizza_board:
-            content.append(Paragraph(f'{pizza_board}', normal_style))
-        content.append(Paragraph(f'Цена: {price}', normal_style))
+            content.append(Paragraph(f'Борт: {pizza_board}', normal_style))
         content.append(Paragraph(f'Сумма товара: {basket_sum}', normal_style))
 
     # Общая сумма

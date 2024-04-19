@@ -34,6 +34,7 @@
                                     <div class="parameter-for-item">
                                     <label for="pizza_board">Борт для пиццы:</label>
                                     <select class="select-item" name="pizza_board" id="pizza_board">
+                                        <option value="0">без борта</option>
                                         {% for board in pizza_board %}
                                             <option value="{{ board.id }}">{{ board.name }}</option>
                                         {% endfor %}

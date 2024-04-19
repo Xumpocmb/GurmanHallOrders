@@ -55,7 +55,6 @@ def logout_view(request):
 
 @login_required
 def add_to_cart_view(request):
-
     item_id = request.POST.get('item_id')
     param_id = request.POST.get('item-params')
     item = get_object_or_404(Item, pk=item_id)

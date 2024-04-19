@@ -65,7 +65,17 @@ class CartItem(models.Model):
         return f'Корзина: {self.user.username} | Продукт: {self.item.name}'
 
     def sum(self):
-        return self.item_params.price * self.quantity
+        if self.item_params.size:
+            size = self.item_params.size.size
+            if self.pizza_board:
+                if size == 25:
+                    return (self.item_params.price * self.quantity) + self.pizza_board.price25
+                elif size == 32:
+                    return (self.item_params.price * self.quantity) + self.pizza_board.price32
+                elif size == 43:
+                    return (self.item_params.price * self.quantity) + self.pizza_board.price43
+        else:
+            return self.item_params.price * self.quantity
 
     def de_json(self):
         items = {

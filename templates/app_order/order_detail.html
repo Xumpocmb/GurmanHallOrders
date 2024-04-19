@@ -15,22 +15,21 @@
     <p class="item-params"><strong>Метод доставки:</strong> {{ order.delivery_method }}</p>
     <!-- Отображение информации о бесплатной доставке -->
     {% if order.delivery_method == 'Курьер' %}
-        {% if order.free_delivery %}
+        {% if order.free_delivery == 0 %}
             <p><strong>Бесплатная доставка:</strong> Да</p>
         {% else %}
-            <p><strong>Бесплатная доставка:</strong> Нет</p>
+            <p><strong>Стоимость доставки: </strong>{{ order.free_delivery }}</p>
         {% endif %}
     {% endif %}
     <p class="item-params"><strong>Метод оплаты:</strong> {{ order.get_payment_method_display }}</p>
     <p class="item-params"><strong>Создан:</strong> {{ order.created_at }}</p>
     <p class="item-params"><strong>Обновлен:</strong> {{ order.updated_at }}</p>
     <h2>Товары в Заказе:</h2>
-    <ul>
-        {% for basket in order.basket_history.baskets %}
-            <li><strong>{{ basket.product_name }}:</strong></li>
-            <ul>
-                <li><strong>Цена:</strong> {{ basket.price }}</li>
-                <li><strong>Сумма:</strong> {{ basket.sum }}</li>
+    <div class="div-order-items">
+    {% for basket in order.basket_history.baskets %}
+        <div class="div-order-item">
+            <strong>{{ basket.product_name }}:</strong>
+            <ul class="ul-order-items">
                 <li><strong>Количество:</strong> {{ basket.quantity }}</li>
                 <li><strong>Описание:</strong> {{ basket.description }}</li>
                 <li><strong>Параметры товара:</strong>
@@ -55,9 +54,11 @@
                         {% endif %}
                     </ul>
                 </li>
+                <li><strong>Сумма:</strong> {{ basket.sum }}</li>
             </ul>
+        </div>
+    {% endfor %}
+    </div>
 
-        {% endfor %}
-    </ul>
     <p><strong>Общая сумма заказа:</strong> {{ order.basket_history.total_sum }}</p>
 {% endblock %}
