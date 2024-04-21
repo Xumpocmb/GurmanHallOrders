@@ -201,6 +201,16 @@ a.order-link {
     transition: 0.5s;
 }
 
+/* Конец верхнего меню */
+
+.order-filters {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    padding: 10px 0;
+    margin: 5px;
+}
+
 
 /* Пример стилей для различных статусов заказа */
 .status-0 {

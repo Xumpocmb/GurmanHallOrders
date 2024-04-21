@@ -19,10 +19,16 @@ from reportlab.pdfbase import pdfmetrics
 from app_catalog.models import CafeBranch
 
 
-def orders(request):
+def orders_view(request):
+    status_filter = request.GET.get('status')
+    if status_filter is not None:
+        orders = Order.objects.filter(customer__username=request.user.username, status=status_filter)
+    else:
+        orders = Order.objects.filter(customer__username=request.user.username)
     context = {
         'title': 'Заказы',
-        'orders': Order.objects.filter(customer__username=request.user.username),
+        'orders': orders,
+        'order_statuses': Order.STATUSES  # ORDER_STATUSES,
     }
     return render(request, 'app_order/orders.html', context=context)
 

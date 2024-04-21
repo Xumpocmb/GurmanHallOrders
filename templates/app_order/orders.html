@@ -2,7 +2,17 @@
 {% load static %}
 
 {% block content %}
-	<h1>{{ title }}</h1>
+	<h1 class="main-title">{{ title }}</h1>
+    <div class="container-filter">
+    <h3>Выберите фильтры заказов</h3>
+    <div class="order-filters">
+        <a href="{% url 'app_order:orders' %}">Все</a>
+        {% for status_code, status_name in order_statuses %}
+            <a href="?status={{ status_code }}">{% if request.GET.status|default_if_none:""|add:"0" == status_code|add:"0" %}<strong>{{ status_name }}</strong>{% else %}{{ status_name }}{% endif %}</a>
+        {% endfor %}
+    </div>
+    
+    </div>
     {% if orders %}
         <table class="table-orders">
             <tr>
