@@ -3,10 +3,10 @@
 {% block content %}
     <h1 class="main-title">Корзина</h1>
 
-    {% if cart_items %}
+    {% if user_carts %}
         <div class="div-category-item">
             <ul>
-                {% for cart_item in cart_items %}
+                {% for cart_item in user_carts %}
                     <li>
                         <p class="item-name">{{ cart_item.item.name }}</p>
                         <p class="item-params">Количество: {{ cart_item.quantity }}</p>
@@ -16,7 +16,16 @@
                             <p class="item-params">Шапочка: {{ cart_item.topping }}</p>
                         {% endif %}
                         {% if cart_item.pizza_board %}
-                            <p class="item-params">Борт для пиццы: {{ cart_item.pizza_board.name }}</p>
+                            <p class="item-params">Борт для пиццы: {{ cart_item.pizza_board.name }} -{{ item.pizza_board.boardparams_set.first.price }} р. </p>
+                        {% endif %}
+                        <!-- Add addons if exist -->
+                        {% if item.addons.exists %}
+                            <p>Добавки к пицце:</p>
+                            <ul>
+                                {% for addon in item.addons.all %}
+                                    <li>{{ addon.name }} - {{ addon.price }} руб.</li>
+                                {% endfor %}
+                            </ul>
                         {% endif %}
                         <p class="item-params">{% if cart_item.item_params.size %}
                             {{ cart_item.item_params.size }}
@@ -25,7 +34,8 @@
                         {% elif cart_item.item_params.count %}
                             {{ cart_item.item_params.count }} шт.
                         {% endif %}
-                            - {{ cart_item.sum }} руб.</p>
+                            - {{ cart_item.sum }} руб.
+                        </p>
                         <p class="link-to-cart"><a class="link-from-cart"
                                                    href="{% url 'app_user:remove_from_cart' cart_item.id %}">Удалить</a>
                         </p>
@@ -36,9 +46,7 @@
             <p><a href="{% url 'app_order:order_create' %}">Оформить заказ</a></p>
 
         </div>
-        {% if not cart_items %}
-            <p class="main-title">Корзина пуста</p>
-        {% endif %}
-
+    {% else %}
+        <p class="main-title">Корзина пуста</p>
     {% endif %}
 {% endblock %}

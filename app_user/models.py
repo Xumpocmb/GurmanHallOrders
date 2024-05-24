@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from app_catalog.models import Item, ItemParams, PizzaSauce, Topping, PizzaBoard
+from app_catalog.models import Item, ItemParams, PizzaSauce, Topping, PizzaBoard, BoardParams, PizzaAddons
 from django.utils.translation import gettext_lazy as _
 
 
@@ -51,6 +51,7 @@ class CartItem(models.Model):
     description = models.TextField(verbose_name='Описание', null=True, blank=True)
     sauce_base = models.ForeignKey(to=PizzaSauce, on_delete=models.SET_NULL, verbose_name='Соус-основа', null=True, blank=True)
     pizza_board = models.ForeignKey(to=PizzaBoard, on_delete=models.SET_NULL, verbose_name='Борт для пиццы', null=True, blank=True)
+    addons = models.ManyToManyField(to=PizzaAddons, verbose_name='Добавки к пицце', blank=True)
     topping = models.ForeignKey(to=Topping, on_delete=models.SET_NULL, verbose_name='Шапочка', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создан', null=True, blank=True)
 
@@ -65,19 +66,17 @@ class CartItem(models.Model):
         return f'Корзина: {self.user.username} | Продукт: {self.item.name}'
 
     def sum(self):
-        if self.item_params.size:
-            size = self.item_params.size.size
-            if self.pizza_board:
-                if size == 25:
-                    return (self.item_params.price * self.quantity) + self.pizza_board.price25
-                elif size == 32:
-                    return (self.item_params.price * self.quantity) + self.pizza_board.price32
-                elif size == 43:
-                    return (self.item_params.price * self.quantity) + self.pizza_board.price43
-        else:
-            return self.item_params.price * self.quantity
+        base_price = self.item_params.price * self.quantity
+        if self.pizza_board:
+            board_params = BoardParams.objects.filter(board=self.pizza_board).first()
+            if board_params:
+                base_price += board_params.price
+        addons_price = sum(addon.price for addon in self.addons.all())
+        base_price += addons_price
+        return base_price
 
     def de_json(self):
+        addons_dict = {addon.name: float(addon.price) for addon in self.addons.all()}
         items = {
             'product_name': f'{self.item.category.name}|{self.item.name}',
             'price': float(self.item_params.price),
@@ -91,6 +90,7 @@ class CartItem(models.Model):
             },
             'sauce': self.sauce_base.name if self.sauce_base else None,
             'topping': self.topping.name if self.topping else None,
-            'pizza_board': self.pizza_board.name if self.pizza_board else None
+            'pizza_board': {'name': self.pizza_board.name, 'price': float(BoardParams.objects.filter(board=self.pizza_board).first().price)} if self.pizza_board else None,
+            'addons': addons_dict,
         }
         return items

@@ -143,11 +143,11 @@ def generate_pdf(order):
         content.append(Paragraph(f'{product_name}: {quantity}', heading_style3))
         params = basket['params']
         if params['size']:
-            content.append(Paragraph(f'Размер: {params['size']}', normal_style))
+            content.append(Paragraph(f'Размер: {params["size"]}', normal_style))
         if params['count']:
-            content.append(Paragraph(f'Шт.: {params['count']}', normal_style))
+            content.append(Paragraph(f'Шт.: {params["count"]}', normal_style))
         if params['weight']:
-            content.append(Paragraph(f'Гр.: {params['weight']}', normal_style))
+            content.append(Paragraph(f'Гр.: {params["weight"]}', normal_style))
         if sauce:
             content.append(Paragraph(f'Соус основа:{sauce}', normal_style))
         if topping:
@@ -157,7 +157,7 @@ def generate_pdf(order):
         content.append(Paragraph(f'Сумма товара: {basket_sum}', normal_style))
 
     # Общая сумма
-    content.append(Paragraph(f'Общая сумма заказа: {order.basket_history['total_sum']}', heading_style1))
+    content.append(Paragraph(f'Общая сумма заказа: {order.basket_history["total_sum"]}', heading_style1))
 
     # Добавляем содержимое в PDF документ
     doc.build(content)

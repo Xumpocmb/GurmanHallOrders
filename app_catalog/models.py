@@ -87,9 +87,6 @@ class ItemParams(models.Model):
 
 class PizzaBoard(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название борта')
-    price25 = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена для 25 см', blank=True, null=True)
-    price32 = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена для 32 см', blank=True, null=True)
-    price43 = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена для 43 см', blank=True, null=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True, null=True, verbose_name='URL')
     is_active = models.BooleanField(default=True, verbose_name='Активен')
 
@@ -100,6 +97,20 @@ class PizzaBoard(models.Model):
 
     def __str__(self):
         return f'Борт для пиццы: {self.name}'
+
+
+class BoardParams(models.Model):
+    board = models.ForeignKey(PizzaBoard, on_delete=models.CASCADE, blank=True, null=True)
+    size = models.ForeignKey(PizzaSizes, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Размер')
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена в руб.', blank=False, null=False)
+
+    class Meta:
+        db_table = 'board_params'
+        verbose_name = 'Параметры борта'
+        verbose_name_plural = 'Параметры борта'
+
+    def __str__(self):
+        return f'Параметры для: {self.board.name}'
 
 
 class PizzaSauce(models.Model):
@@ -128,3 +139,19 @@ class Topping(models.Model):
 
     def __str__(self):
         return f'Соус для пиццы: {self.name}'
+
+
+class PizzaAddons(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Название добавки')
+    price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name='Цена в руб.', blank=False, null=False)
+    image = models.ImageField(upload_to='pizza_addons/', blank=True, null=True, verbose_name='Изображение')
+    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True, verbose_name='URL')
+    is_active = models.BooleanField(default=True, verbose_name='Активен')
+
+    class Meta:
+        db_table = 'pizza_addons'
+        verbose_name = 'Добавка для пиццы'
+        verbose_name_plural = 'Добавки для пиццы'
+
+    def __str__(self):
+        return f'Добавка для пиццы: {self.name}'
