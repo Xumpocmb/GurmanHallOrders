@@ -1,22 +1,15 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
+
+from app_catalog.models import CafeBranch
+from app_order.forms import OrderForm
 from app_order.models import Order
 from app_user.models import User, CartItem
-from django.http import HttpResponseRedirect
-from django.contrib import messages
-from app_order.forms import OrderForm
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from django.http import HttpResponse
-from io import BytesIO
-from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfbase import pdfmetrics
-from app_catalog.models import CafeBranch
+from .pdf_generator import generate_pdf
 
 
 def orders_view(request):
@@ -74,98 +67,6 @@ def change_order_status(request, pk, status):
     order.status = status
     order.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
-def generate_pdf(order):
-
-    pdfmetrics.registerFont(TTFont('Arial', 'static/fonts/Arial.ttf', 'UTF-8'))
-
-    # Создаем буфер для PDF файла
-    buffer = BytesIO()
-
-    # Создаем PDF документ
-    doc = SimpleDocTemplate(buffer, pagesize=A4, title=f'Детали заказа {order.display_id()}',)
-
-    # Получаем стили для абзацев
-    styles = getSampleStyleSheet()
-    styles['Normal'].fontName = 'Arial'
-    styles['Heading1'].fontName = 'Arial'
-    styles['Heading3'].fontName = 'Arial'
-    normal_style = styles['Normal']
-    heading_style1 = styles['Heading1']
-    heading_style3 = styles['Heading3']
-
-    # Создаем список для содержимого PDF
-    content = []
-
-    # Заголовок
-    content.append(Paragraph(f'Детали заказа {order.display_id()}', heading_style3))
-    content.append(Paragraph(f'{order.branch.name}', heading_style1))
-    content.append(Paragraph(f'{order.branch.phone1}', heading_style3))
-    content.append(Paragraph(f'{order.branch.phone2}', heading_style3))
-
-    # Строка с датой и временем
-    date_string = order.created_at.strftime('%d-%m-%Y %H:%M')
-    content.append(Paragraph(f'Дата: {date_string}', normal_style))
-
-    # Данные для заказа
-    data = [
-        f'Заказчик: {order.first_name}',
-        f'Адрес: {order.address}',
-        f'Телефон: {order.phone}',
-        f'Description: {order.description}',
-        f'Способ доставки: {order.delivery_method}',
-        f'Способ оплаты: {order.get_payment_method_display()}',
-    ]
-
-    # Создаем абзацы и добавляем их в список содержимого
-    for item in data:
-        paragraph = Paragraph(item, normal_style)
-        content.append(paragraph)
-
-    if order.delivery_method == 'Курьер':
-        if order.free_delivery == 0.0:
-            content.append(Paragraph('Стоимость доставки: Бесплатная', normal_style))
-        else:
-            content.append(Paragraph(f'Стоимость доставки: {order.free_delivery} руб.', normal_style))
-
-    # Корзина
-    content.append(Paragraph('Товар(ы):', heading_style1))
-
-    for basket in order.basket_history['baskets']:
-        product_name = basket['product_name']
-        quantity = basket['quantity']
-        basket_sum = basket['sum']
-        sauce = basket['sauce']
-        topping = basket['topping']
-        pizza_board = basket['pizza_board']
-
-        content.append(Paragraph(f'{product_name}: {quantity}', heading_style3))
-        params = basket['params']
-        if params['size']:
-            content.append(Paragraph(f'Размер: {params["size"]}', normal_style))
-        if params['count']:
-            content.append(Paragraph(f'Шт.: {params["count"]}', normal_style))
-        if params['weight']:
-            content.append(Paragraph(f'Гр.: {params["weight"]}', normal_style))
-        if sauce:
-            content.append(Paragraph(f'Соус основа:{sauce}', normal_style))
-        if topping:
-            content.append(Paragraph(f'Шапочка: {topping}', normal_style))
-        if pizza_board:
-            content.append(Paragraph(f'Борт: {pizza_board}', normal_style))
-        content.append(Paragraph(f'Сумма товара: {basket_sum}', normal_style))
-
-    # Общая сумма
-    content.append(Paragraph(f'Общая сумма заказа: {order.basket_history["total_sum"]}', heading_style1))
-
-    # Добавляем содержимое в PDF документ
-    doc.build(content)
-
-    # Получаем содержимое буфера
-    pdf = buffer.getvalue()
-    buffer.close()
-    return pdf
 
 
 def download_pdf(request, pk):

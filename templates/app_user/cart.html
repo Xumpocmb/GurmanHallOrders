@@ -10,19 +10,21 @@
                     <li>
                         <p class="item-name">{{ cart_item.item.name }}</p>
                         <p class="item-params">Количество: {{ cart_item.quantity }}</p>
+                        {% if cart_item.pizza_board %}
+                            <p class="item-params">Борт для пиццы: {{ cart_item.pizza_board.name }}
+                                - {{ cart_item.pizza_board.boardparams_set.first.price }} р. </p>
+                        {% endif %}
                         {% if cart_item.sauce_base %}
                             <p class="item-params">{{ cart_item.sauce_base }}</p>
                         {% elif cart_item.topping %}
                             <p class="item-params">Шапочка: {{ cart_item.topping }}</p>
                         {% endif %}
-                        {% if cart_item.pizza_board %}
-                            <p class="item-params">Борт для пиццы: {{ cart_item.pizza_board.name }} -{{ item.pizza_board.boardparams_set.first.price }} р. </p>
-                        {% endif %}
+
                         <!-- Add addons if exist -->
-                        {% if item.addons.exists %}
+                        {% if cart_item.addons.exists %}
                             <p>Добавки к пицце:</p>
                             <ul>
-                                {% for addon in item.addons.all %}
+                                {% for addon in cart_item.addons.all %}
                                     <li>{{ addon.name }} - {{ addon.price }} руб.</li>
                                 {% endfor %}
                             </ul>
@@ -42,7 +44,7 @@
                     </li>
                 {% endfor %}
             </ul>
-            <p class="item-name">Общая сумма: {{ total_price }} руб.</p>
+            <p class="item-name">Общая сумма: {{ user_carts.total_sum }} руб.</p>
             <p><a href="{% url 'app_order:order_create' %}">Оформить заказ</a></p>
 
         </div>

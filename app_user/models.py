@@ -70,9 +70,9 @@ class CartItem(models.Model):
         if self.pizza_board:
             board_params = BoardParams.objects.filter(board=self.pizza_board).first()
             if board_params:
-                base_price += board_params.price
+                base_price += board_params.price * self.quantity
         addons_price = sum(addon.price for addon in self.addons.all())
-        base_price += addons_price
+        base_price += addons_price * self.quantity
         return base_price
 
     def de_json(self):

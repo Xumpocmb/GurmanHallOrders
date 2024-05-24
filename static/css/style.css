@@ -27,6 +27,13 @@ div.parameter-for-item {
     display: block;
 }
 
+div.pizza-addons {
+    border: 1px solid #b4b4b4;
+    margin: 5px;
+    padding: 2px;
+    border-radius: 5px;
+}
+
 div.all-category-items {
     margin: 20px auto;
     padding: 30px;

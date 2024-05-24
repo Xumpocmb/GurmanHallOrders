@@ -40,11 +40,11 @@
         </div>
         <div>
             <label for="id_branch">Филиал:</label>
-        <select name="branch" id="id_branch">
-            {% for branch in branches %}
-                <option value="{{ branch.id }}">{{ branch.name }}</option>
-            {% endfor %}
-        </select>
+            <select name="branch" id="id_branch">
+                {% for branch in branches %}
+                    <option value="{{ branch.id }}">{{ branch.name }}</option>
+                {% endfor %}
+            </select>
             {% for error in form.branch.errors %}
                 {{ error }}
             {% endfor %}
@@ -62,6 +62,11 @@
                 <option value="1">Наличные</option>
                 <option value="2">Банковская карта</option>
             </select>
+        </div>
+        <div>
+            <label for="id_description">Комментарий к заказу:</label>
+            <textarea id="id_description" name="description" cols="50" rows="5"
+                      placeholder="Введите примечание к заказу.."></textarea>
         </div>
         <button type="submit">Отправить заказ</button>
     </form>

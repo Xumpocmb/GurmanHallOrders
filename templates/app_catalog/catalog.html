@@ -22,53 +22,66 @@
                             <li><p class="item-name">{{ item.name }}</p></li>
                             <div class="parameter-for-item">
                                 {% if category.name == 'Пицца' %}
-                                    <!-- соус основа -->
-                                    <label for="sauce_base">Соус основа:</label>
-                                    <select class="select-item" name="sauce_base" id="sauce_base">
-                                        {% for sauce in sauces %}
-                                            <option value="{{ sauce.id }}">{{ sauce.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    </div>
                                     <!-- борт для пиццы -->
                                     <div class="parameter-for-item">
-                                    <label for="pizza_board">Борт для пиццы:</label>
-                                    <select class="select-item" name="pizza_board" id="pizza_board">
-                                        <option value="0">без борта</option>
-                                        {% for board in pizza_board %}
-                                            <option value="{{ board.id }}">{{ board.name }}</option>
+                                        <label for="pizza_board">Борт для пиццы:</label>
+                                        <select class="select-item" name="pizza_board" id="pizza_board">
+                                            <option value="0">без борта</option>
+                                            {% for board in pizza_boards %}
+                                                <option value="{{ board.id }}">{{ board.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <!-- соус основа -->
+                                    <div class="parameter-for-item">
+                                        <label for="sauce_base">Соус основа:</label>
+                                        <select class="select-item" name="pizza_sauce" id="sauce_base">
+                                            {% for sauce in pizza_sauces %}
+                                                <option value="{{ sauce.id }}">{{ sauce.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <!-- добавки -->
+                                    <div class="parameter-for-item pizza-addons">
+                                    {% for addon in pizza_addons %}
+                                        <input type="checkbox" id="addon_check" name="addons" value="{{ addon.id }}">
+                                        <label for="addon_check">{{ addon.name }}</label>
+                                    {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                                <div class="parameter-for-item">
+                                    <label for="item-params">Параметры:</label>
+                                    <select name="item-params" id="item-params">
+                                        {% for param in item.itemparams_set.all %}
+                                            {% if param.size.size %}
+                                                <option value="{{ param.id }}">{{ param.size.size }} см.
+                                                    - {{ param.price }}
+                                                    руб.
+                                                </option>
+                                            {% endif %}
+
+                                            {% if param.weight %}
+                                                <option value="{{ param.id }}">{{ param.weight }} гр.
+                                                    - {{ param.price }}
+                                                    руб.
+                                                </option>
+                                            {% endif %}
+
+                                            {% if param.count %}
+                                                <option value="{{ param.id }}">{{ param.count }} шт. - {{ param.price }}
+                                                    руб.
+                                                </option>
+                                            {% endif %}
+
                                         {% endfor %}
                                     </select>
-                                {% endif %}
                                 </div>
-                            <div class="parameter-for-item">
-                                <label for="item-params">Параметры:</label>
-                                <select name="item-params" id="item-params">
-                                    {% for param in item.itemparams_set.all %}
-                                        {% if param.size.size %}
-                                            <option value="{{ param.id }}">{{ param.size.size }} см. - {{ param.price }}
-                                                руб.
-                                            </option>
-                                        {% endif %}
-
-                                        {% if param.weight %}
-                                            <option value="{{ param.id }}">{{ param.weight }} гр. - {{ param.price }}
-                                                руб.
-                                            </option>
-                                        {% endif %}
-
-                                        {% if param.count %}
-                                            <option value="{{ param.id }}">{{ param.count }} шт. - {{ param.price }}
-                                                руб.
-                                            </option>
-                                        {% endif %}
-
-                                    {% endfor %}
-                                </select>
+                                <input type="submit" value="Добавить в корзину">
                             </div>
-                            <input type="submit" value="Добавить в корзину">
                         </form>
                     </div>
+                    
                 {% endfor %}
             </ul>
         </div>
