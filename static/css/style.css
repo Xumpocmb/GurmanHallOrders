@@ -99,6 +99,16 @@ img.td-img-print {
     gap: 30px;
 }
 
+.ul-category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+
+}
+
 .div-order-items {
     display: block;
 }

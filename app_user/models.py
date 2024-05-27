@@ -86,7 +86,8 @@ class CartItem(models.Model):
             'params': {
                 'size': float(self.item_params.size.size) if self.item_params.size else None,
                 'count': float(self.item_params.count) if self.item_params.count else None,
-                'weight': float(self.item_params.weight) if self.item_params.weight else None
+                'weight': float(self.item_params.weight) if self.item_params.weight else None,
+                'volume': float(self.item_params.volume) if self.item_params.volume else None,
             },
             'sauce': self.sauce_base.name if self.sauce_base else None,
             'topping': self.topping.name if self.topping else None,

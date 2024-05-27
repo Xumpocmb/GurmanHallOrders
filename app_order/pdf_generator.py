@@ -57,6 +57,8 @@ def add_basket_items(order, content, normal_style, heading_style3):
             content.append(Paragraph(f'Размер: {params["size"]}', normal_style))
         if params['count']:
             content.append(Paragraph(f'Шт.: {params["count"]}', normal_style))
+        if params['volume']:
+            content.append(Paragraph(f'Л.: {params["volume"]}', normal_style))
         if params['weight']:
             content.append(Paragraph(f'Гр.: {params["weight"]}', normal_style))
         if sauce:

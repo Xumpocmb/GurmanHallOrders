@@ -35,6 +35,8 @@
                             {{ cart_item.item_params.weight }} гр
                         {% elif cart_item.item_params.count %}
                             {{ cart_item.item_params.count }} шт.
+                        {% elif cart_item.item_params.volume %}
+                            {{ cart_item.item_params.volume }} л.
                         {% endif %}
                             - {{ cart_item.sum }} руб.
                         </p>

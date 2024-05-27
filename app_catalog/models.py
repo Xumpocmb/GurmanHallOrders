@@ -74,6 +74,7 @@ class ItemParams(models.Model):
     count = models.PositiveSmallIntegerField(verbose_name='Количество в шт.', blank=True, null=True)
     size = models.ForeignKey(PizzaSizes, on_delete=models.SET_NULL, blank=True, null=True)
     weight = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Вес в гр.', blank=True, null=True)
+    volume = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Объем в л.', blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена в руб.', blank=False, null=False)
 
     class Meta:

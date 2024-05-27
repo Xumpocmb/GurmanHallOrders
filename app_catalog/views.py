@@ -15,6 +15,7 @@ def category_detail(request, slug):
     context = {
         'title': category.name,
         'category': category,
+        'categories': Category.objects.filter(is_active=True),
         'items': Item.objects.filter(category__slug=slug, is_active=True),
     }
     if category.slug == 'picca':

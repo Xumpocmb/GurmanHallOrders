@@ -4,7 +4,7 @@
     <h1 class="main-title">Каталог</h1>
 
     {% if categories %}
-        <ul>
+        <ul class="ul-category-list">
             {% for category in categories %}
                 <li><a href="{% url 'app_catalog:category_detail' category.slug %}">{{ category.name }}</a></li>
             {% endfor %}
@@ -70,6 +70,12 @@
 
                                             {% if param.count %}
                                                 <option value="{{ param.id }}">{{ param.count }} шт. - {{ param.price }}
+                                                    руб.
+                                                </option>
+                                            {% endif %}
+                                            
+                                            {% if param.volume %}
+                                                <option value="{{ param.id }}">{{ param.volume }} л. - {{ param.price }}
                                                     руб.
                                                 </option>
                                             {% endif %}

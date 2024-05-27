@@ -26,38 +26,41 @@
     <p class="item-params"><strong>Обновлен:</strong> {{ order.updated_at }}</p>
     <h2>Товары в Заказе:</h2>
     <div class="div-order-items">
-    {% for basket in order.basket_history.baskets %}
-        <div class="div-order-item">
-            <strong>{{ basket.product_name }}:</strong>
-            <ul class="ul-order-items">
-                <li><strong>Количество:</strong> {{ basket.quantity }}</li>
-                <li><strong>Описание:</strong> {{ basket.description }}</li>
-                <li><strong>Параметры товара:</strong>
-                    <ul>
-                        {% if basket.params.size %}
-                            <li>Размер: {{ basket.params.size }}</li>
-                        {% endif %}
-                        {% if basket.params.weight %}
-                            <li>Вес: {{ basket.params.weight }}</li>
-                        {% endif %}
-                        {% if basket.params.count %}
-                            <li>Количество: {{ basket.params.count }}</li>
-                        {% endif %}
-                        {% if basket.sauce %}
-                            <li>Соус: {{ basket.sauce }}</li>
-                        {% endif %}
-                        {% if basket.topping %}
-                            <li>Шапочка: {{ basket.topping }}</li>
-                        {% endif %}
-                        {% if basket.pizza_board %}
-                            <li>Борт: {{ basket.pizza_board }}</li>
-                        {% endif %}
-                    </ul>
-                </li>
-                <li><strong>Сумма:</strong> {{ basket.sum }}</li>
-            </ul>
-        </div>
-    {% endfor %}
+        {% for basket in order.basket_history.baskets %}
+            <div class="div-order-item">
+                <strong>{{ basket.product_name }}:</strong>
+                <ul class="ul-order-items">
+                    <li><strong>Количество:</strong> {{ basket.quantity }}</li>
+                    <li><strong>Описание:</strong> {{ basket.description }}</li>
+                    <li><strong>Параметры товара:</strong>
+                        <ul>
+                            {% if basket.params.size %}
+                                <li>Размер: {{ basket.params.size }}</li>
+                            {% endif %}
+                            {% if basket.params.weight %}
+                                <li>Вес: {{ basket.params.weight }}</li>
+                            {% endif %}
+                            {% if basket.params.count %}
+                                <li>Количество: {{ basket.params.count }}</li>
+                            {% endif %}
+                            {% if basket.params.volume %}
+                                <li>Объем: {{ basket.params.volume }}</li>
+                            {% endif %}
+                            {% if basket.sauce %}
+                                <li>Соус: {{ basket.sauce }}</li>
+                            {% endif %}
+                            {% if basket.topping %}
+                                <li>Шапочка: {{ basket.topping }}</li>
+                            {% endif %}
+                            {% if basket.pizza_board %}
+                                <li>Борт: {{ basket.pizza_board }}</li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    <li><strong>Сумма:</strong> {{ basket.sum }}</li>
+                </ul>
+            </div>
+        {% endfor %}
     </div>
 
     <p><strong>Общая сумма заказа:</strong> {{ order.basket_history.total_sum }}</p>
