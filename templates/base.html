@@ -10,9 +10,9 @@
 <body>
 <div class="wrapper-all-menu">
     <div class="header-name">
-        <div class="header-logo-img"><img class="logo-img" src="{% static 'img/non-solo-pizza2.png' %}" alt="logo">
+        <div class="header-logo-img"><img class="logo-img" src="{% static 'img/logo1.png' %}" alt="logo">
         </div>
-        <div class="header-text-name"><h1>Solo Pizza</h1></div>
+        <div class="header-text-name"><h1>Гурман Хол</h1></div>
     </div>
     <div class="menu-wrapper">
         <div class="menu-selection">
@@ -23,7 +23,14 @@
                 <li class="menu-item"><a href="{% url 'app_home:home' %}">Главная</a></li>
                 <li class="menu-item"><a href="{% url 'app_catalog:catalog' %}">Каталог</a></li>
                 {% if user.is_authenticated %}
-                    <li class="menu-item"><a href="{% url 'app_user:cart' %}">Корзина</a></li>
+                    <li class="menu-item">
+                        <a href="{% url 'app_user:cart' %}">Корзина
+                            <span class="cart-background">
+                                {% if user_carts.total_quantity %}
+                                    {{ user_carts.total_quantity }}
+                                {% else %}0{% endif %} | {{ user_carts.total_sum }} руб.</span>
+                        </a>
+                    </li>
                     <li class="menu-item"><a href="{% url 'app_order:orders' %}">Заказы</a></li>
                     <li class="menu-item"><a href="{% url 'app_user:logout' %}">Выход</a></li>
                 {% endif %}

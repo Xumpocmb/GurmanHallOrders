@@ -53,7 +53,7 @@ def logout_view(request):
     return redirect('app_home:home')
 
 
-@login_required
+@login_required(login_url='app_user:login')
 def add_to_cart_view(request):
     user = request.user
 
@@ -108,7 +108,7 @@ def add_to_cart_view(request):
     return redirect('app_catalog:catalog')
 
 
-@login_required
+@login_required(login_url='app_user:login')
 def remove_from_cart_view(request, cart_id):
     cart_item = CartItem.objects.filter(id=cart_id).first()
     if cart_item:
@@ -117,6 +117,7 @@ def remove_from_cart_view(request, cart_id):
     return redirect('app_user:cart')
 
 
+@login_required(login_url='app_user:login')
 def cart_view(request):
     context = {
         'title': 'Корзина',

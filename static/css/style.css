@@ -109,6 +109,11 @@ img.td-img-print {
 
 }
 
+.ul-category-list>li {
+    font-size: 24px;
+    font-weight: bold;
+}
+
 .div-order-items {
     display: block;
 }
@@ -137,6 +142,21 @@ p.item-params {
 p.link-to-cart {
     margin: 0;
     padding: 0;
+}
+
+span.cart-background {
+    background-color: #1b1b1b;
+    color: #38866d;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+span.cart-background:hover {
+    background: #2d6e5a;
+    color: white;
+    text-shadow: 1px 1px 1px #000000;
+    transition: 0.5s;
+
 }
 
 a.link-from-cart {
